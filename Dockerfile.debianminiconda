@@ -1,1 +1,1 @@
-from rothnic:tinyconda
+FROM rothnic:tinyconda
