@@ -11,18 +11,23 @@ RUN usermod --password XT7/q1XkHlXSs root
 
 # Create ansible user
 RUN useradd --password  XT7/q1XkHlXSs --create-home --groups users,wheel ansible
-#RUN mkdir /home/ansible/.ssh
-#RUN chown ansible:ansible /home/ansible/.ssh
-#RUN chmod 0700 /home/ansible/.ssh
-#ADD insecure_key.pub /home/ansible/.ssh/authorized_keys
-#RUN chown ansible:ansible /home/ansible/.ssh/authorized_keys
-#RUN chmod 0600 /home/ansible/.ssh/authorized_keys
+
+# Setup rvm
+RUN curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
+RUN curl -L get.rvm.io | bash -s stable
+RUN source /etc/profile.d/rvm.sh
+RUN /bin/bash -l -c "rvm requirements"
+RUN /bin/bash -l -c "rvm install ruby"
+RUN /bin/bash -l -c "gem install bundler --no-ri --no-rdoc"
 
 # Setup sudo
-RUN yum -y install sudo glibc-common rubygems
+RUN yum -y install sudo glibc-common
 RUN echo 'ansible	ALL=(ALL)	NOPASSWD: ALL' >> /etc/sudoers
-RUN gem install net-ssh --version "=2.9.2" --quiet
-RUN gem install serverspec --quiet
+RUN /bin/bash -l -c 'gem install net-ssh --version "=2.9.2" --quiet'
+RUN /bin/bash -l -c 'gem install json serverspec --quiet'
+
+# Setup the .ssh directory and no host
+RUN /bin/bash -l -c "mkdir ~/.ssh && echo -e 'Host *\n\tStrictHostKeyChecking no\n' >> ~/.ssh/config"
 
 # Setup conda
 RUN wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
