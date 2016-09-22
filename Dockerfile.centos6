@@ -35,7 +35,7 @@ RUN chmod +x /tmp/miniconda.sh
 RUN ./tmp/miniconda.sh -b -p /opt/miniconda2
 RUN echo 'PATH=/opt/miniconda2/bin:$PATH' >> /root/.bashrc
 RUN /opt/miniconda2/bin/conda update --yes conda
-RUN /opt/miniconda2/bin/conda install --yes -c bioconda ansible
+RUN /opt/miniconda2/bin/conda install -c kbroughton ansible
 
 # Install sshd and generate ssh keys
 RUN yum -y install openssh-server
