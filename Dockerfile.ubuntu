@@ -49,7 +49,7 @@ RUN sed -i s/^PermitRootLogin/#PermitRootLogin/g /etc/ssh/sshd_config
 RUN echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 
 # Setup the .ssh directory and no host
-# RUN "mkdir ~/.ssh && echo -e 'Host *\n\tStrictHostKeyChecking no\n' >> ~/.ssh/config"
+RUN "mkdir ~/.ssh && chmod 700 ~/.ssh && echo -e 'Host *\n\tStrictHostKeyChecking no\n' >> ~/.ssh/config"
 
 RUN /etc/init.d/ssh start
 RUN /etc/init.d/ssh stop
