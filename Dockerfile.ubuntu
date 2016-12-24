@@ -11,6 +11,8 @@ RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
     wget --quiet https://repo.continuum.io/miniconda/Miniconda2-4.0.5-Linux-x86_64.sh && \
     /bin/bash /Miniconda2-4.0.5-Linux-x86_64.sh -b -p /opt/miniconda2 && \
     rm Miniconda2-4.0.5-Linux-x86_64.sh
+RUN opt/conda/bin/conda update --yes conda
+RUN opt/conda/bin/conda install --yes -c bioconda ansible
 
 RUN apt-get install -y curl grep sed dpkg && \
     TINI_VERSION=`curl https://github.com/krallin/tini/releases/latest | grep -o "/v.*\"" | sed 's:^..\(.*\).$:\1:'` && \
