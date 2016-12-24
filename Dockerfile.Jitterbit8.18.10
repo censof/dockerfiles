@@ -1,0 +1,33 @@
+FROM centos:7
+
+MAINTAINER Norjuliana Ahmad
+
+#change password to ansible
+RUN usermod --password XT7/q1XkHlXSs root
+
+RUN su -c 'yum update -y'
+RUN yum install -y \
+wget \
+glibc.i686 \
+libgcc.i686 \
+libstdc++.i686 \
+libuuid.i686 \
+zlib.i686 \
+pam.i686 \
+cyrus-sasl-lib.i686 \
+unixODBC \
+python \
+sed \
+sudo \
+unzip \
+tar \
+openssh-server
+
+RUN wget https://download.jitterbit.com/v8/agent/8.18.10/jitterbit-agent-8.18.10-24.i386.rpm
+
+RUN rpm -Uvh jitterbit-agent-8.18.10-24.i386.rpm
+
+# Expose SSH
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
+
